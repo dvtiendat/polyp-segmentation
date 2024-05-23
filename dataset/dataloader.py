@@ -9,7 +9,7 @@ from torchvision.transforms import Compose, Resize, InterpolationMode, PILToTens
 import torch
 from torchvision import transforms
 
-DIR = "polyp-segmentation/data/"
+DIR = "E:/Vscode Workspace/BKAI Polyp/polyp-segmentation/data/"
 TRAIN_PATH = os.path.join(DIR, 'train/train')
 TRAIN_GT_PATH = os.path.join(DIR, 'train_gt/train_gt')
 TEST_PATH = os.path.join(DIR, 'test/test')
