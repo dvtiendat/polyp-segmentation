@@ -14,20 +14,6 @@ TRAIN_PATH = os.path.join(DIR, 'train/train')
 TRAIN_GT_PATH = os.path.join(DIR, 'train_gt/train_gt')
 TEST_PATH = os.path.join(DIR, 'test/test')
 
-def plot_img(num_img, path, img_list):
-    '''
-    Function to visualize image in the dataset.
-    num_img: Number of images to visualize.
-    path: Path to the data.
-    img_list: List of image names in each set.
-    '''
-    fig, ax = plt.subplots(1, num_img, figsize=(20, 4))
-    for i in range(num_img):
-        img = plt.imread(os.path.join(path, img_list[i]))
-        ax[i].imshow(img)
-        ax[i].axis('off')
-    plt.show()
-
 class PreprocessData(Dataset):
     def __init__(self, image_path, gt_path, transform):
         super(PreprocessData, self).__init__()
