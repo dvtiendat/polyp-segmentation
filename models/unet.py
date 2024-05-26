@@ -54,7 +54,7 @@ class UnetDecoderBlock(nn.Module):
 
     def forward(self, x, skip_layer):
         x = self.trans_conv(x)
-        x = torch.cat([x, skip_layer], axis=1)
+        x = torch.cat([x, skip_layer], dim=1)
 
         x = self.conv1(x)
         x = self.bn1(x)

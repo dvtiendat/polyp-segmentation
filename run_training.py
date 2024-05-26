@@ -10,6 +10,7 @@ from torch.optim import lr_scheduler
 import matplotlib.pyplot as plt
 
 from models.unet import Unet
+from models.deeplab import Deeplab
 from utils.utils import weight_init, save_model, load_model
 from config import device, num_classes, learning_rate, batch_size, display_step, epochs
 from dataset.dataloader import get_dataloaders, get_datasets
@@ -24,22 +25,22 @@ model = Unet(n_class=num_classes)
 model.apply(weight_init)
 model = nn.DataParallel(model)
 model.to(device)
+print(model)
+# weights = torch.Tensor([[0.4, 0.55, 0.05]]).to(device)
+# loss_fn = nn.CrossEntropyLoss(weights)
+# optimizer = optim.Adam(params=model.parameters(), lr=learning_rate)
+# learning_rate_scheduler = lr_scheduler.StepLR(optimizer, step_size=4, gamma=0.6)
+# checkpoint_path = 'polyp-segmentation/unet_model.pth'
 
-weights = torch.Tensor([[0.4, 0.55, 0.05]]).to(device)
-loss_fn = nn.CrossEntropyLoss(weights)
-optimizer = optim.Adam(params=model.parameters(), lr=learning_rate)
-learning_rate_scheduler = lr_scheduler.StepLR(optimizer, step_size=4, gamma=0.6)
-checkpoint_path = 'polyp-segmentation/unet_model.pth'
-
-run_training(
-    model=model,
-    train_dataloader=train_dataloader,
-    val_dataloader=val_dataloader,
-    loss_function=loss_fn,
-    optimizer=optimizer,
-    learning_rate_scheduler=learning_rate_scheduler,
-    device=device,
-    display_step=display_step,
-    epochs=epochs,
-    checkpoint_path=checkpoint_path
-)
+# run_training(
+#     model=model,
+#     train_dataloader=train_dataloader,
+#     val_dataloader=val_dataloader,
+#     loss_function=loss_fn,
+#     optimizer=optimizer,
+#     learning_rate_scheduler=learning_rate_scheduler,
+#     device=device,
+#     display_step=display_step,
+#     epochs=epochs,
+#     checkpoint_path=checkpoint_path
+# )

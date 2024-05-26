@@ -1,1 +1,2 @@
-from .deeplab import *
+from models.deeplab import *
+from models.unet import *
