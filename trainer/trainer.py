@@ -1,67 +1,67 @@
 import torch
-import torch.nn as nn
 from tqdm import tqdm
-import matplotlib.pyplot as plt
-from utils.utils import save_model
+from utils.logger import TensorBoardLogger
 
-def train(train_dataloader, valid_dataloader, model, optimizer, loss_function, learning_rate_scheduler, epoch, device, display_step):
-    print(f"Start epoch #{epoch+1}, learning rate for this epoch: {learning_rate_scheduler.get_last_lr()}")
-    train_loss_epoch = 0
-    test_loss_epoch = 0
-    model.train()
+def train_model(model, train_dataloader, val_dataloader, criterion, optimizer, num_epochs, device, checkpoint_path, log_dir):
+    best_val_loss = float('inf')
+    logger = TensorBoardLogger(log_dir)
 
-    for i, (data, targets) in enumerate(tqdm(train_dataloader, desc=f"Epoch {epoch+1}", unit="batch")):
-        data, targets = data.to(device), targets.to(device)
-        optimizer.zero_grad()
-        outputs = model(data)
-        loss = loss_function(outputs, targets.long())
-        loss.backward()
-        optimizer.step()
-        train_loss_epoch += loss.item()
-        if (i + 1) % display_step == 0:
-            print(f'Train Epoch: {epoch + 1} [{(i + 1) * len(data)}/{len(train_dataloader.dataset)} ({100 * (i + 1) / len(train_dataloader):.0f}%)]\tLoss: {loss.item():.4f}')
+    epoch_bar = tqdm(total=num_epochs, desc='Total Progress')
 
-    train_loss_epoch /= len(train_dataloader)
+    for epoch in range(num_epochs):
+        model.train()
+        train_loss = 0.0
+        num_train_batches = len(train_dataloader)
 
-    model.eval()
-    with torch.no_grad():
-        for data, target in valid_dataloader:
-            data, target = data.to(device), target.to(device)
-            test_output = model(data)
-            test_loss = loss_function(test_output, target)
-            test_loss_epoch += test_loss.item()
+        for images, labels in train_dataloader:
+            images = images.to(device)
+            labels = labels.to(device)
+            labels = labels.squeeze(dim=1).long()
 
-    test_loss_epoch /= len(valid_dataloader)
-    return train_loss_epoch, test_loss_epoch
+            outputs = model(images)
+            loss = criterion(outputs, labels)
 
-def plot_loss(train_loss_array, test_loss_array):
-    plt.figure(figsize=(10, 5))
-    plt.plot(train_loss_array, label='Train Loss')
-    plt.plot(test_loss_array, label='Test Loss')
-    plt.title('Training and Validation Loss')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
-    plt.legend()
-    plt.show()
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
 
-def run_training(model, train_dataloader, val_dataloader, loss_function, optimizer, learning_rate_scheduler, device, display_step, epochs, checkpoint_path):
-    train_loss_array = []
-    test_loss_array = []
-    last_loss = float('inf')
+            train_loss += loss.item()
 
-    for epoch in range(epochs):
-        train_loss_epoch, test_loss_epoch = train(
-            train_dataloader, val_dataloader, model, optimizer, loss_function, learning_rate_scheduler, epoch, device, display_step
-        )
+        train_loss /= num_train_batches
 
-        if test_loss_epoch < last_loss:
-            save_model(model, optimizer, checkpoint_path)
-            last_loss = test_loss_epoch
+        model.eval()
+        val_loss = 0.0
+        num_val_batches = len(val_dataloader)
+        with torch.no_grad():
+            for images, labels in val_dataloader:
+                images = images.to(device)
+                labels = labels.to(device)
+                labels = labels.squeeze(dim=1).long()
 
-        learning_rate_scheduler.step()
-        train_loss_array.append(train_loss_epoch)
-        test_loss_array.append(test_loss_epoch)
+                outputs = model(images)
+                loss = criterion(outputs, labels)
 
-    print("Train Loss Array:", train_loss_array)
-    print("Test Loss Array:", test_loss_array)
-    plot_loss(train_loss_array, test_loss_array)
+                val_loss += loss.item()
+
+        val_loss /= num_val_batches
+
+        print(f"Epoch [{epoch+1}/{num_epochs}], Train Loss: {train_loss:.10f}, Val Loss: {val_loss:.10f}")
+        
+        # Log the losses to TensorBoard
+        logger.log_scalar('Train_loss', train_loss, epoch + 1)
+        logger.log_scalar('Val_loss', val_loss, epoch + 1)
+
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            checkpoint = {
+                'epoch': epoch,
+                'model': model.state_dict(),
+                'optimizer': optimizer.state_dict(),
+                'loss': val_loss,
+            }
+            torch.save(checkpoint, checkpoint_path)
+
+        epoch_bar.update(1)
+
+    epoch_bar.close()
+    logger.close()

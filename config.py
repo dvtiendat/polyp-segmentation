@@ -2,13 +2,16 @@ import torch
 import os
 import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
+ROOT = 'E:/Vscode Workspace/BKAI Polyp/polyp-segmentation/'
 
 DIR = "E:/Vscode Workspace/BKAI Polyp/polyp-segmentation/data/"
 TRAIN_PATH = os.path.join(DIR, 'train/train')
 TRAIN_GT_PATH = os.path.join(DIR, 'train_gt/train_gt')
 TEST_PATH = os.path.join(DIR, 'test/test')
 
-checkpoint = 'polyp-segmentation/'
+log_dir = os.path.join(ROOT, 'logs')
+checkpoint = os.path.join(ROOT, 'checkpoints/model.pth')
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 num_classes = 3
 learning_rate = 2e-4
