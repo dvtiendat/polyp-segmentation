@@ -1,0 +1,41 @@
+paths:
+  root: "E:/Vscode Workspace/BKAI Polyp/polyp-segmentation/"
+  dir: "E:/Vscode Workspace/BKAI Polyp/polyp-segmentation/data/"
+  train: "${paths.dir}train/train"
+  train_gt: "${paths.dir}train_gt/train_gt"
+  test: "${paths.dir}test/test"
+  log_dir: "${paths.root}logs"
+  checkpoint: "${paths.root}checkpoints/model.pth"
+
+training:
+  device: "cuda"  # Set "cpu" if CUDA is not available
+  num_classes: 3
+  learning_rate: 2e-4
+  batch_size: 8
+  display_step: 50
+  epochs: 50
+
+transforms:
+  train:
+    - type: "HorizontalFlip"
+      p: 0.4
+    - type: "VerticalFlip"
+      p: 0.4
+    - type: "RandomGamma"
+      gamma_limit: [70, 130]
+      p: 0.2
+    - type: "RGBShift"
+      p: 0.3
+      r_shift_limit: 10
+      g_shift_limit: 10
+      b_shift_limit: 10
+    - type: "Normalize"
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+    - type: "ToTensorV2"
+
+  val:
+    - type: "Normalize"
+      mean: [0.485, 0.456, 0.406]
+      std: [0.229, 0.224, 0.225]
+    - type: "ToTensorV2"
