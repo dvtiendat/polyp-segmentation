@@ -5,42 +5,32 @@ This repository serves as a segmentation model to classify all polyps into neopl
 ## Directory Structure
 ```
 polyp-segmentation/
-│
-├── configs/
-│   ├── config
-│
 ├── checkpoints/
 │   ├── (model will be saved here)
-│
 ├── dataset/
 │   ├── dataloader.py
 │   ├── preprocess.py
 │   └── __init__.py
-│
 ├── models/
 │   ├── DeepLabV3Plus.py
 │   └── unet.py
 │   └── __init__.py
-│
 ├── scripts/
 │   ├── test.py
-│
 ├── trainer/
 │   ├── logger.py
 │   ├── trainer.py
 │   └── __init__.py
-│
 ├── utils/
 │   ├── mask_utils.py
 │   ├── utils.py
 │   ├── loss.py
 │   ├── logger.py
 │   └── __init__.py
-│
 ├── logs/
 │   └── (TensorBoard logs will be saved here)
-│
 ├── run_training.py
+├── config.py
 ├── requirements.txt
 └── README.md
 ```
@@ -58,7 +48,7 @@ pip install -r requirements.txt
 Ensure your data is place in the data folder
 
 ## Configuration
-Modify *configs/config.yaml* to change paramaters/hyperparameters.
+Modify *config.py* to change paramaters/hyperparameters. Possible adjustment by using .yaml file will be updated in the future.
 
 ## Training
 To train the model, run:
