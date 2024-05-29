@@ -8,7 +8,7 @@ paths:
   checkpoint: "${paths.root}checkpoints/model.pth"
 
 training:
-  device: "cuda"  # Set "cpu" if CUDA is not available
+  device: "cuda" 
   num_classes: 3
   learning_rate: 2e-4
   batch_size: 8
