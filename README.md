@@ -68,8 +68,6 @@ Some of the testing images:
 ![image](https://github.com/dvtiendat/polyp-segmentation/assets/111187020/5a121fd4-58d8-497d-8b51-4114a937f68a)
 ![image](https://github.com/dvtiendat/polyp-segmentation/assets/111187020/3e199c4a-2367-4e4d-8b1b-b2ef6a864d70)
 
-## License
-This project is license under the MIT license
 ## Acknowledgment
 1. Dinh Sang. (2021). BKAI-IGH NeoPolyp. Kaggle. https://kaggle.com/competitions/bkai-igh-neopolyp
 2. Lan, P.N., An, N.S., Hang, D.V., Long, D.V., Trung, T.Q., Thuy, N.T., Sang, D.V.: NeoUnet: Towards accurate colon polyp segmentation and neoplasm detection. In: Proceedings of the 16th International Symposium on Visual Computing (2021)
