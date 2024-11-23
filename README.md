@@ -35,20 +35,15 @@ polyp-segmentation/
 └── README.md
 ```
 
-## Model architecture
-Predownloaded DeepLabV3Plus. Futher installation and implementation will be updated in the future.
-Last update: 29/05/2024
+
 
 ## Installation
 Clone the repository and install required libraries.
   ```sh
 git clone https://github.com/dvtiendat/polyp-segmentation.git
-pip install -r requirements.txt
+cd .\polyp-segmentation\
   ```
 Ensure your data is place in the data folder
-
-## Configuration
-Modify *config.py* to change paramaters/hyperparameters. Possible adjustment by using .yaml file will be updated in the future.
 
 ## Training
 To train the model, run:
@@ -58,7 +53,7 @@ python run_training.py
 ## Testing
 To visualize some of the segmentation, use:
   ```sh
-python scripts/test.py
+python infer.py --image_path image.jpeg
   ```
 ## TensorBoard Visualization
 To run TensorBoard, use this command:
@@ -66,7 +61,7 @@ To run TensorBoard, use this command:
 tensorboard --logdir=logs
 ```
 ## Result
-This project achieved ~70% accuracy in the contest of BKAI-IGH NeoPolyp. This is still far off the benchmark of 80%, however further improvements will be updated in the long run.
+This project achieved ~0.77 accuracy in the contest of BKAI-IGH NeoPolyp
 Some of the testing images:
 ![image](https://github.com/dvtiendat/polyp-segmentation/assets/111187020/46c6438e-470a-483c-b46d-49666609eeef)
 ![image](https://github.com/dvtiendat/polyp-segmentation/assets/111187020/5a121fd4-58d8-497d-8b51-4114a937f68a)
