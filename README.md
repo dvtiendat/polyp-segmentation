@@ -41,6 +41,7 @@ polyp-segmentation/
 Clone the repository and install required libraries.
   ```sh
 git clone https://github.com/dvtiendat/polyp-segmentation.git
+pip install -r requirements.txt
 cd .\polyp-segmentation\
   ```
 Ensure your data is place in the data folder
