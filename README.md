@@ -1,4 +1,4 @@
-# Polyp Segmentation using DeepLabV3+ model
+# Polyp Segmentation 
 
 This repository serves as a segmentation model to classify all polyps into neoplastic or non-neoplastic classes denoted by red and green colors, respectively.
 
